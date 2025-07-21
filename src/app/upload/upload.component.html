@@ -1,0 +1,49 @@
+<div>
+  <h2><strong>File Upload</strong></h2>
+
+  <input type="file" id="fileInput" (change)="onFileSelected($event)">
+  <button [disabled]="!file" (click)="startUpload()">Start Upload</button>
+  <button [disabled]="!uploadId" (click)="pauseUpload()">Pause</button>
+  <button [disabled]="!uploadId || !paused" (click)="resumeUpload()">Resume</button>
+
+  <div style="margin-top: 10px">
+    <progress [value]="progress" max="100" style="width: 100%"></progress>
+    <p *ngIf="progress > 0">{{ progress }}% complete</p>
+  </div>
+
+  <ul>
+    <li *ngFor="let message of log">
+      <span *ngIf="message.startsWith('✅')">✅</span>
+      <span *ngIf="message.startsWith('⏩')">⏩</span>
+      <span *ngIf="message.startsWith('📂')">📂</span>
+      <span *ngIf="message.startsWith('⏸')">⏸</span>
+      <span *ngIf="message.startsWith('▶️')">▶️</span>
+      <span *ngIf="message.startsWith('🎉')">🎉</span>
+      <span *ngIf="message.startsWith('❌')">❌</span>
+      {{ message }}
+    </li>
+  </ul>
+
+  <div *ngIf="incompleteUploads.length">
+    <h3>Unfinished Upload Sessions</h3>
+    <ul>
+      <li *ngFor="let session of incompleteUploads">
+        📁 {{ session.fileName }} ({{ session.totalSize }} bytes)
+        <button (click)="resumeOldSession(session)">Resume</button>
+      </li>
+    </ul>
+  </div>
+  
+<div *ngIf="finishedUploads.length">
+  <h3>✅ Finished Upload Sessions</h3>
+  <ul>
+    <li *ngFor="let session of finishedUploads">
+      📁 <strong>{{ session.fileName }}</strong> ({{ session.totalSize }} bytes)
+      <button (click)="download(session.id, session.fileName)">Download</button>
+      <button (click)="downloadZip(session.id)">Download as ZIP</button>
+    </li>
+  </ul>
+</div>
+
+</div>
+
