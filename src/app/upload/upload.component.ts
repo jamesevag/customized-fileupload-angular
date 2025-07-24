@@ -55,7 +55,7 @@ export class UploadComponent implements OnInit {
       this.activeResumeSession &&
       this.file.name === this.activeResumeSession.session.fileName
     ) {
-      this.log.push(`✅ File reselected. Resuming...`);
+      this.log.push(`File reselected. Resuming...`);
       this.uploadChunks(
         this.activeResumeSession.session.id,
         this.file,
@@ -75,7 +75,7 @@ export class UploadComponent implements OnInit {
   resumeUpload(): void {
     this.paused = false;
     if (this.uploadId && this.file) {
-      this.log.push("▶️ Resuming upload...");
+      this.log.push("Resuming upload...");
       this.uploadChunks(this.uploadId, this.file, this.currentChunkIndex);
     }
   }
@@ -145,8 +145,8 @@ export class UploadComponent implements OnInit {
       this.log.push(`✅ Uploaded chunk ${i + 1} / ${totalChunks}`);
     }
 
-    await this.http.post(`/upload/${uploadId}/complete`, {}).toPromise();
-    this.log.push("🎉 Upload complete!");
+   // await this.http.post(`/upload/${uploadId}/complete`, {}).toPromise();
+   // this.log.push("Upload complete!");
     this.uploadId = null;
     this.currentChunkIndex = 0;
   }
@@ -167,7 +167,7 @@ export class UploadComponent implements OnInit {
     this.log.push(`📂 Loaded session for file: ${session.fileName}`);
 
     if (this.file && this.file.name === session.fileName) {
-      this.log.push(`▶️ Resuming upload with selected file: ${this.file.name}`);
+      this.log.push(`Resuming upload with selected file: ${this.file.name}`);
       this.uploadChunks(
         this.uploadId,
         this.file,
@@ -176,7 +176,7 @@ export class UploadComponent implements OnInit {
       );
     } else {
       this.log.push(
-        `⚠️ File not selected or mismatch. Please reselect: ${session.fileName}`
+        `File not selected or mismatch. Please reselect: ${session.fileName}`
       );
       this.activeResumeSession = {
         session,
