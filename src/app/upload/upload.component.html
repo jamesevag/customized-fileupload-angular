@@ -1,10 +1,12 @@
 <div>
   <h2><strong>File Upload</strong></h2>
 
-  <input type="file" id="fileInput" (change)="onFileSelected($event)">
+  <input type="file" id="fileInput" (change)="onFileSelected($event)" />
   <button [disabled]="!file" (click)="startUpload()">Start Upload</button>
   <button [disabled]="!uploadId" (click)="pauseUpload()">Pause</button>
-  <button [disabled]="!uploadId || !paused" (click)="resumeUpload()">Resume</button>
+  <button [disabled]="!uploadId || !paused" (click)="resumeUpload()">
+    Resume
+  </button>
 
   <div style="margin-top: 10px">
     <progress [value]="progress" max="100" style="width: 100%"></progress>
@@ -33,17 +35,39 @@
       </li>
     </ul>
   </div>
-  
-<div *ngIf="finishedUploads.length">
-  <h3>✅ Finished Upload Sessions</h3>
-  <ul>
-    <li *ngFor="let session of finishedUploads">
-      📁 <strong>{{ session.fileName }}</strong> ({{ session.totalSize }} bytes)
-      <button (click)="download(session.id, session.fileName)">Download</button>
-      <button (click)="downloadZip(session.id)">Download as ZIP</button>
-    </li>
-  </ul>
-</div>
 
-</div>
+  <div *ngIf="finishedUploads.length">
+    <h3>✅ Finished Upload Sessions</h3>
+    <ul>
+      <li *ngFor="let session of finishedUploads">
+        📁 <strong>{{ session.fileName }}</strong> ({{
+          session.totalSize
+        }}
+        bytes)
+        <div style="margin-top: 10px">
+          <button (click)="download(session.id, session.fileName)">
+            Download
+          </button>
+          <button (click)="downloadZip(session.id)" style="margin-left: 10px">
+            Download as ZIP
+          </button>
+        </div>
 
+        <!-- Download progress bar for this session -->
+        <div
+          *ngIf="
+            downloadProgress[session.id] > 0 &&
+            downloadProgress[session.id] < 100
+          "
+        >
+          <progress
+            [value]="downloadProgress[session.id]"
+            max="100"
+            style="width: 100%"
+          ></progress>
+          <p>{{ downloadProgress[session.id] }}% downloaded</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
